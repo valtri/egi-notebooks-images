@@ -1,4 +1,4 @@
-FROM eginotebooks/base
+FROM eginotebooks-base:stable
 
 RUN mamba install -y --quiet \
         cftime \
