@@ -1,5 +1,5 @@
 # 59c973d16bca has python3.8.8
-# Using that to ensure the image remains the same 
+# Using that to ensure the image remains the same
 FROM jupyter/datascience-notebook:59c973d16bca
 
 USER root
@@ -42,3 +42,6 @@ RUN pip install --no-cache-dir \
         nbgitpuller
 
 RUN jupyter labextension install @jupyter-widgets/jupyterlab-manager jupyter-leaflet
+
+# disable panel with HTTP 404
+RUN pip uninstall -y pyviz-comms
