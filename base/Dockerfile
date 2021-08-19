@@ -1,5 +1,5 @@
 # 59c973d16bca has python3.8.8
-# Using that to ensure the image remains the same 
+# Using that to ensure the image remains the same
 FROM jupyter/datascience-notebook:59c973d16bca
 
 USER root
@@ -41,4 +41,5 @@ RUN pip install --no-cache-dir \
         shortid \
         nbgitpuller
 
-RUN jupyter labextension install @jupyter-widgets/jupyterlab-manager jupyter-leaflet
+RUN jupyter labextension install @jupyter-widgets/jupyterlab-manager jupyter-leaflet \
+    && jupyter serverextension enable panel.io.jupyter_server_extension
