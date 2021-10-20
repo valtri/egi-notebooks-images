@@ -1,10 +1,11 @@
 # 59c973d16bca has python3.8.8
-# Using that to ensure the image remains the same 
+# Using that to ensure the image remains the same
 FROM jupyter/datascience-notebook:59c973d16bca
 
 USER root
 
 RUN apt-get update \
+    && apt-get upgrade --no-install-recommends -y \
     && apt-get install --no-install-recommends -y \
         less \
         graphviz \
