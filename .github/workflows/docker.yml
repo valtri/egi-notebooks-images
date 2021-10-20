@@ -89,10 +89,10 @@ jobs:
       matrix:
         image:
         - single-user
-        - single-user-d4science
-        - single-user-panosc
-        - single-user-r-d4science
-        - single-user-sobigdata
+        # - single-user-d4science
+        # - single-user-panosc
+        # - single-user-r-d4science
+        # - single-user-sobigdata
 
     steps:
       - name: try to make free space
