@@ -77,6 +77,8 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+RUN touch /TEST2
+
 USER $NB_UID
 
 # Avoid a broken extension to show up
