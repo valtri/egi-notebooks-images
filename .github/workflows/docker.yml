@@ -22,14 +22,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Docker meta
-        id: docker_meta
+      - name: Docker meta commit
+        id: docker_meta_commit
         uses: docker/metadata-action@v3
         with:
           images: eginotebooks/${{ matrix.image }}
           tags: |
             type=sha
             latest
+      - name: Docker meta pull-request
+        id: docker_meta_pr
+        uses: docker/metadata-action@v3
+        with:
+          images: eginotebooks/${{ matrix.image }}
+          tags: |
+            type=sha
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
@@ -39,14 +46,22 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-        if: github.event_name != 'pull_request'
-      - name: Build and push
+      - name: Build and push from commit
         uses: docker/build-push-action@v2
         with:
           context: ${{ matrix.image }}
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.docker_meta.outputs.tags }}
-          labels: ${{ steps.docker_meta.outputs.labels }}
+          push: true
+          tags: ${{ steps.docker_meta_commit.outputs.tags }}
+          labels: ${{ steps.docker_meta_commit.outputs.labels }}
+        if: ${{ github.event_name != 'pull_request' }}
+      - name: Build and push from pull-request
+        uses: docker/build-push-action@v2
+        with:
+          context: ${{ matrix.image }}
+          push: true
+          tags: ${{ steps.docker_meta_pr.outputs.tags }}
+          labels: ${{ steps.docker_meta_pr.outputs.labels }}
+        if: ${{ github.event_name == 'pull_request' }}
 
   base-image:
     name: Build base image
@@ -127,7 +142,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-        if: github.event_name != 'pull_request'
       # Unfortunately I haven't been able to load an prebuilt image here
       # so not using the build-push-action from docker
       # it's missing the labels and assumes tags is just one
@@ -141,6 +155,8 @@ jobs:
       - name: Push full image
         run: |
           docker push ${{ steps.docker_meta.outputs.tags }}
+      - name: Push full image latest tag
+        run: |
           docker push eginotebooks/${{ matrix.image }}:latest
         if: ${{ github.event_name != 'pull_request' }}
       - uses: addnab/docker-run-action@v3
