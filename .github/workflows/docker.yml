@@ -3,9 +3,9 @@ name: Build and push containers
 
 on:
   push:
-    # only pushes on master so we don't push intermediate results to dockerhub
+    # only pushes on default master so we don't push intermediate results to dockerhub
     branches:
-    - master
+    - pr-push
   pull_request:
 
 jobs:
