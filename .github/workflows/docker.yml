@@ -52,6 +52,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ${{ matrix.image }}
+          push: true
           tags: ${{ steps.docker_meta_commit.outputs.tags }}
           labels: ${{ steps.docker_meta_commit.outputs.labels }}
         if: ${{ github.event_name != 'pull_request' }}
@@ -59,6 +60,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ${{ matrix.image }}
+          push: true
           tags: ${{ steps.docker_meta_pr.outputs.tags }}
           labels: ${{ steps.docker_meta_pr.outputs.labels }}
         if: ${{ github.event_name == 'pull_request' }}
