@@ -77,7 +77,7 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN touch /TEST2
+RUN touch /TEST3
 
 USER $NB_UID
 
