@@ -48,7 +48,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-        if: github.event_name != 'pull_request'
       - name: Build and push from commit
         uses: docker/build-push-action@v3
         with:
@@ -146,7 +145,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-        if: github.event_name != 'pull_request'
       # Unfortunately I haven't been able to load an prebuilt image here
       # so not using the build-push-action from docker
       # it's missing the labels and assumes tags is just one
