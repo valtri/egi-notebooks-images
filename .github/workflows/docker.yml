@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Docker meta commit
         id: docker_meta_commit
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: valtri/${{ matrix.image }}
           tags: |
@@ -32,7 +32,7 @@ jobs:
             latest
       - name: Docker meta pull-request
         id: docker_meta_pr
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: valtri/${{ matrix.image }}
           tags: |
@@ -74,7 +74,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Docker meta
         id: docker_meta_base
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: ${{ github.repository_owner }}/notebooks-base
           tags: |
@@ -120,7 +120,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Docker meta
         id: docker_meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: valtri/${{ matrix.image }}
           tags: |
