@@ -30,6 +30,7 @@ jobs:
         with:
           images: valtri/${{ matrix.image }}
           tags: |
+            type=ref,event=tag
             type=sha
             latest
       - name: Docker meta pull-request
@@ -38,7 +39,7 @@ jobs:
         with:
           images: valtri/${{ matrix.image }}
           tags: |
-            type=sha
+            type=ref,event=pr
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
