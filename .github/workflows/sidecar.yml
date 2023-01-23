@@ -28,10 +28,11 @@ jobs:
         id: docker_meta
         uses: docker/metadata-action@v4
         with:
-          images: eginotebooks/${{ matrix.image }}
+          images: valtri/${{ matrix.image }}
           tags: |
+            type=ref,event=pr
+            type=ref,event=tag
             type=sha
-            latest
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx

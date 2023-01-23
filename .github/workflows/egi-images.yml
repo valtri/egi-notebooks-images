@@ -3,9 +3,8 @@ name: Build and push EGI containers
 
 on:
   push:
-    # only pushes on master so we don't push intermediate results to dockerhub
     branches:
-    - master
+    - gpu
   pull_request:
 
 jobs:
@@ -24,6 +23,8 @@ jobs:
         with:
           images: ${{ github.repository_owner }}/notebooks-base
           tags: |
+            type=ref,event=pr
+            type=ref,event=tag
             type=sha
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -64,8 +65,10 @@ jobs:
         id: docker_meta
         uses: docker/metadata-action@v4
         with:
-          images: eginotebooks/${{ matrix.image }}
+          images: valtri/${{ matrix.image }}
           tags: |
+            type=ref,event=pr
+            type=ref,event=tag
             type=sha
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -84,7 +87,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-        if: github.event_name != 'pull_request'
       # Unfortunately I haven't been able to load an prebuilt image here
       # so not using the build-push-action from docker
       # it's missing the labels and assumes tags is just one
@@ -93,13 +95,12 @@ jobs:
           docker build \
             --build-arg BASE_IMAGE=${{ needs.base-image.outputs.base }} \
             --tag ${{ steps.docker_meta.outputs.tags }} \
-            --tag eginotebooks/${{ matrix.image }}:latest \
+            --tag valtri/${{ matrix.image }}:latest \
             ${{ matrix.image }}
       - name: Push full image
         run: |
           docker push ${{ steps.docker_meta.outputs.tags }}
-          docker push eginotebooks/${{ matrix.image }}:latest
-        if: ${{ github.event_name != 'pull_request' }}
+          docker push valtri/${{ matrix.image }}:latest
       - uses: addnab/docker-run-action@v3
         with:
           image: ${{ steps.docker_meta.outputs.tags }}
