@@ -16,7 +16,8 @@ RUN mamba install -y --quiet \
 	psycopg2 \
 	boto3 \
 	folium \
-	tensorflow-gpu \
+	cudatoolkit \
+	tensorflow \
 	tqdm \
 	lxml \
 	pymongo \
