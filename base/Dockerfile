@@ -1,5 +1,8 @@
-# 2022-11-21 is python 3.10.6
-FROM jupyter/datascience-notebook:2022-11-21
+# 2023-10-31 is:
+#   * lab-4.0.7
+#   * notebook-7.0.6
+#   * python 3.11.6
+FROM quay.io/jupyter/datascience-notebook:2023-10-31
 
 USER root
 
@@ -32,11 +35,7 @@ RUN conda install mamba -y --quiet -c conda-forge \
         xarray \
         cartopy \
         ipyleaflet \
-        jupyterlab==3.1.4 \
-        notebook==6.4.1 \
-        nbclassic==0.2.8 \
         jupyter-server-proxy \
-        jinja2==3.0.3 \
     && conda clean --all
 
 RUN pip install --no-cache-dir \
