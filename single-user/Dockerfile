@@ -102,10 +102,6 @@ RUN pip install --no-cache-dir \
 RUN mamba create --name python3.7 -y --quiet -c conda-forge ipython python=3.7 ipykernel libsndfile \
     && conda clean --all
 
-# collaboration extension
-RUN pip install --no-cache-dir \
-    jupyter_collaboration==2.1.0
-
 RUN jupyter lab build
 
 RUN rmdir work
