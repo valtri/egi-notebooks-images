@@ -1,8 +1,7 @@
-# 2023-10-31 is:
-#   * lab-4.0.7
-#   * notebook-7.0.6
-#   * python 3.11.6
-FROM quay.io/jupyter/datascience-notebook:2023-10-31
+# lab-4.1.8
+# notebook-7.1.3
+# python 3.11.9
+FROM quay.io/jupyter/datascience-notebook:2024-05-06
 
 USER root
 
