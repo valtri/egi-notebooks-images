@@ -1,5 +1,10 @@
-# 2022-11-21 is python 3.10.6
-FROM jupyter/datascience-notebook:2022-11-21
+# 2024-05-20
+# julia-1.10.3
+# lab-4.2.0
+# notebook-7.2.0
+# python-3.11.9
+# r-4.3.3
+FROM quay.io/jupyter/datascience-notebook:2024-05-20
 
 USER root
 
@@ -17,9 +22,11 @@ RUN curl https://raw.githubusercontent.com/kadwanev/retry/master/retry \
 
 USER $NB_UID
 
-# install mamba which goes way faster than conda
-RUN conda install mamba -y --quiet -c conda-forge \
-    && mamba install -y -q \
+# JupyterHub 5 beta
+RUN pip install --no-cache-dir --pre \
+        jupyterhub==5.0.0b2
+
+RUN mamba install -y -q \
         r-plotly \
         r-gdata \
         rdflib \
@@ -32,11 +39,7 @@ RUN conda install mamba -y --quiet -c conda-forge \
         xarray \
         cartopy \
         ipyleaflet \
-        jupyterlab==3.1.4 \
-        notebook==6.4.1 \
-        nbclassic==0.2.8 \
         jupyter-server-proxy \
-        jinja2==3.0.3 \
     && conda clean --all
 
 RUN pip install --no-cache-dir \
