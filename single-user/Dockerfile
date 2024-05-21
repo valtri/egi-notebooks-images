@@ -4,11 +4,6 @@ FROM $BASE_IMAGE
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-RUN pip install \
-	PennyLane==0.26.0 \
-	qiskit==0.38.0 \
-	qiskit-machine-learning==0.4.0
-
 RUN mamba install -y --quiet \
         cftime \
         ipympl \
@@ -16,7 +11,6 @@ RUN mamba install -y --quiet \
 	psycopg2 \
 	boto3 \
 	folium \
-	tensorflow \
 	tqdm \
 	lxml \
 	pymongo \
@@ -26,15 +20,21 @@ RUN mamba install -y --quiet \
 	matplotlib \
 	scipy \
 	lightgbm \
-	eo-learn \
 	plotly \
 	graphviz \
 	jq \
 	nb_conda_kernels \
-        dwave-ocean-sdk==5.5.0 \
-        amazon-braket-sdk==1.31.0 \
-	elyra \
+	amazon-braket-sdk \
+	# quantum SDKs
+	PennyLane \
+	qiskit \
+	qiskit-machine-learning \
+	dwave-ocean-sdk \
     && conda clean --all
+# FIXME: incompatibility with lab-4
+#	eo-learn
+#	elyra
+#	tensorflow
 
 # See https://github.com/mamba-org/mamba/issues/336
 # pytorch is not installing properly with mamba
