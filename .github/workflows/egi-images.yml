@@ -3,9 +3,8 @@ name: Build and push EGI containers
 
 on:
   push:
-    # only pushes on master so we don't push intermediate results to dockerhub
     branches:
-      - master
+      - "*"
   pull_request:
 
 jobs:
@@ -20,7 +19,7 @@ jobs:
 
   base-image:
     name: Build base image
-    needs: detect-changes 
+    needs: detect-changes
     if: needs.detect-changes.outputs.build-base == 1
     runs-on: ubuntu-latest
     outputs:
@@ -73,7 +72,7 @@ jobs:
         id: docker_meta
         uses: docker/metadata-action@v5
         with:
-          images: eginotebooks/${{ matrix.image }}
+          images: valtri/${{ matrix.image }}
           tags: |
             type=sha
       - name: Set up QEMU
@@ -102,12 +101,12 @@ jobs:
           docker build \
             --build-arg BASE_IMAGE=${{ needs.base-image.outputs.base }} \
             --tag ${{ steps.docker_meta.outputs.tags }} \
-            --tag eginotebooks/${{ matrix.image }}:latest \
+            --tag valtri/${{ matrix.image }}:latest \
             ${{ matrix.image }}
       - name: Push full image
         run: |
           docker push ${{ steps.docker_meta.outputs.tags }}
-          docker push eginotebooks/${{ matrix.image }}:latest
+          docker push valtri/${{ matrix.image }}:latest
         if: ${{ github.event_name != 'pull_request' }}
       - uses: addnab/docker-run-action@v3
         with:
