@@ -1,6 +1,7 @@
 ARG BASE_IMAGE=eginotebooks/base:latest
+ARG FLAVOR=noncollab
 # hadolint ignore=DL3006
-FROM $BASE_IMAGE
+FROM $BASE_IMAGE AS single-user
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -104,6 +105,18 @@ RUN pip install --no-cache-dir \
 # python3.7, install on a different environment
 RUN mamba create --name python3.7 -y --quiet -c conda-forge ipython python=3.7 ipykernel libsndfile \
     && conda clean --all
+
+# image flavors
+
+FROM single-user AS single-user-collab
+RUN pip install --no-cache-dir \
+        jupyter_collaboration==2.1.2
+
+FROM single-user AS single-user-noncollab
+
+# selected flavor + cleanup
+
+FROM single-user-${FLAVOR} AS final
 
 RUN jupyter lab build
 
